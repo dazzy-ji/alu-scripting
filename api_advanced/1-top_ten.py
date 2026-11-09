@@ -13,8 +13,8 @@ def top_ten(subreddit):
         return
 
     url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
-    headers = {"User-Agent": "linux:alu-scripting:v1.0.0 (by /u/dazzy-ji)"}
-    
+    headers = {"User-Agent": "python:alu.api.advanced:v1.0.0 (by /u/dazzy)"}
+
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
         if response.status_code != 200:
@@ -23,7 +23,7 @@ def top_ten(subreddit):
 
         data = response.json().get("data", {})
         posts = data.get("children", [])
-        
+
         if not posts:
             print(None)
             return
