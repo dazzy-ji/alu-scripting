@@ -8,14 +8,29 @@ import requests
 
 def top_ten(subreddit):
     """Queries Reddit API and prints the titles of the first 10 hot posts."""
-    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
-    headers = {"User-Agent": "alu-scripting:api_advanced:v1.0 (by /u/dazzy)"}
-    response = requests.get(url, headers=headers, allow_redirects=False)
+    if not subreddit or not isinstance(subreddit, str):
+        print(None)
+        return
 
-    if response.status_code == 200:
+    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
+    headers = {"User-Agent": "linux:alu-scripting:v1.0.0 (by /u/dazzy-ji)"}
+    
+    try:
+        response = requests.get(url, headers=headers, allow_redirects=False)
+        if response.status_code != 200:
+            print(None)
+            return
+
         data = response.json().get("data", {})
         posts = data.get("children", [])
+        
+        if not posts:
+            print(None)
+            return
+
         for post in posts:
-            print(post.get("data", {}).get("title"))
-    else:
+            title = post.get("data", {}).get("title")
+            if title:
+                print(title)
+    except Exception:
         print(None)
